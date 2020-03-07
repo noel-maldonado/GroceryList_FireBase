@@ -1,0 +1,10 @@
+
+//Initializing Fire Base
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+//Keys
+public static final String KEY_TITLE = "title";
+
+
+//Saving Data to FireStore
+db.collection("Journal").document("First Thoughts").set(data).addOnSuccessListener( //10:00 time

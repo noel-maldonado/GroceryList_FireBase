@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+
+        >
+
+        <ImageButton
+            android:id="@+id/imageViewProduct"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="2dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"/>
+
+        <TextView
+            android:id="@+id/productNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Product Name"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/imageViewProduct"/>
+
+        <TextView
+            android:id="@+id/priceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_below="@+id/productNameTextView"
+            android:layout_toRightOf="@+id/imageViewProduct"
+            android:layout_marginLeft="15dp"
+            android:textColor="@android:color/black"
+            android:text="Price: $"
+            android:layout_marginTop="3dp"
+            />
+
+        <TextView
+            android:id="@+id/productPriceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.00"
+            android:textSize="16sp"
+            android:layout_toRightOf="@+id/priceTextView"
+            android:layout_below="@+id/productNameTextView"
+            android:layout_marginLeft="3dp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="3dp"
+            />
+
+        <TextView
+            android:id="@+id/quantityTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textSize="20sp"
+            android:layout_toLeftOf="@id/buttonAddQuantity"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:textColor="@android:color/black"
+            />
+
+        <Button
+            android:id="@+id/buttonAddQuantity"
+            android:layout_width="38dp"
+            android:layout_height="42dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:text="+"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            />
+
+        <Button
+            android:id="@+id/buttonSubtractQuantity"
+            android:layout_width="38dp"
+            android:layout_height="42dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/quantityTextView"
+            android:layout_marginRight="10dp"
+            android:text="-"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:id="@+id/totalTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonSubtractQuantity"
+            android:layout_toLeftOf="@+id/quantityTextView"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="10dp"
+            android:text="Total:"
+            />
+        <TextView
+            android:id="@+id/productsTotalTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/totalTextView"
+            android:layout_below="@+id/quantityTextView"
+            android:layout_marginTop="45dp"
+            android:layout_marginLeft="3dp"
+            android:text="$0.00"
+            />
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

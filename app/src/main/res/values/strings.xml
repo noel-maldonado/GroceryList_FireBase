@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">My Grocery List</string>
+    <string name="logout">Log Out</string>
+    <string name="Delete">Delete</string>
+    <string name="Add">Add</string>
+    <string name="list_button">list button</string>
+    <string name="settings_button">settings button</string>
+</resources>
