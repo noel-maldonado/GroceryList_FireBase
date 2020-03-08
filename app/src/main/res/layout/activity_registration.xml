@@ -9,8 +9,6 @@
     >
 
 
-
-
         <TextView
             android:id="@+id/registerTitle"
             android:layout_width="wrap_content"
@@ -21,12 +19,41 @@
             android:textStyle="bold"
             android:textColor="@android:color/black"
             android:layout_gravity="center"/>
+        <ProgressBar
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/create_acct_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleLarge"
+            android:visibility="invisible"
+            android:layout_marginBottom="20dp"
+            />
+        <TextView
+            android:id="@+id/username_textview_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:text="Username"
+            android:textColor="@android:color/black"
+            />
+
+        <EditText
+            android:id="@+id/username_edittext_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="5dp"
+            android:inputType="textPersonName"
+            android:maxLines="1" />
+
         <TextView
             android:id="@+id/fstTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="5dp"
             android:text="Full Name"
             android:textColor="@android:color/black"
             />
@@ -36,6 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:ems="10"
+            android:maxLines="1"
             android:textColor="@android:color/black"/>
         <TextView
             android:id="@+id/secTxt"
@@ -51,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:ems="10"
+            android:maxLines="1"
             android:textColor="@android:color/black"
             />
         <TextView
@@ -68,6 +97,7 @@
             android:layout_marginLeft="100dp"
             android:inputType="textPassword"
             android:ems="10"
+            android:maxLines="1"
             android:textColor="@android:color/black"
             />
 

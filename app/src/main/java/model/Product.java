@@ -1,4 +1,4 @@
-package com.example.mygrocerylist;
+package model;
 
 import android.graphics.Bitmap;
 

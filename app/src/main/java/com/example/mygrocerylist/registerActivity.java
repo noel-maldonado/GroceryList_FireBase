@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,28 +24,30 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import util.GListApi;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class registerActivity extends AppCompatActivity {
     //Tag used for Log
     private static final String TAG = "registerActivity";
 
-    //FireStore Keys
-    public static final String KEY_FULLNAME = "fullname";
-    public static final String KEY_EMAIL = "email";
-    public static final String KEY_PASSWORD = "password";
 
-    //Connecting to Firebase
+    //Connecting to FireBase FireStore
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     // Firebase Authentication instance declared
-    private FirebaseAuth mAuth;
-
-    //Input Text Fields
-    private EditText mFullNameField;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private FirebaseUser currentUser;
+    //Users Collection Reference
+    private CollectionReference userRefercence = db.collection("Users");
 
 
     @Override
@@ -55,10 +58,31 @@ public class registerActivity extends AppCompatActivity {
         initRegisterButton();
 
 
-        mAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                currentUser = firebaseAuth.getCurrentUser();
+
+                if (currentUser != null) {
+                    //user is already logged in so they are sent to the entrance
+                    Intent intent = new Intent(registerActivity.this, listMainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                } else {
+                    //no user yet; dont really need an else but I created it so what
+
+                }
+            }
+        };
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        currentUser = firebaseAuth.getCurrentUser();
+        firebaseAuth.addAuthStateListener(authStateListener);
+    }
 
     private void initLoginTextView() {
         TextView tvRegister = (TextView) findViewById(R.id.lnkLoginActivity);
@@ -76,6 +100,8 @@ public class registerActivity extends AppCompatActivity {
     private boolean validateForm() {
         EditText mEmailField = (EditText) findViewById(R.id.txtEmailReg);
         EditText mPasswordField = (EditText) findViewById(R.id.txtPwdReg);
+        EditText mUsername = (EditText) findViewById(R.id.username_edittext_register);
+        EditText mFullName = (EditText) findViewById(R.id.txtName);
 
         boolean valid = true;
 
@@ -94,25 +120,46 @@ public class registerActivity extends AppCompatActivity {
         } else {
             mPasswordField.setError(null);
         }
+
+        String username = mPasswordField.getText().toString();
+        if(TextUtils.isEmpty(username)) {
+            mUsername.setError("Required.");
+            valid = false;
+        } else {
+            mUsername.setError(null);
+        }
+
+        String fullName = mFullName.getText().toString();
+        if(TextUtils.isEmpty(password)) {
+            mFullName.setError("Required.");
+            valid = false;
+        } else {
+            mFullName.setError(null);
+        }
+
+
         return valid;
     }
 
-    private void createAccount(String email, String password) {
+    private void createAccount(String email, String password, final String username) {
         Log.d(TAG, "createAccount: " + email);
         if(!validateForm()) {
             return;
         }
 
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.create_acct_progress);
+
+        progressBar.setVisibility(View.VISIBLE);
 
         // Start  create user with email
-        mAuth.createUserWithEmailAndPassword(email, password)
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                        if(task.isSuccessful()) {
                            //sign up is successful
                            Log.d(TAG, "createUserWithEmail: success");
-                           FirebaseUser user = mAuth.getCurrentUser();
+                           currentUser = firebaseAuth.getCurrentUser();
                            sendEmailVerification();
 
                            EditText mFullNameField = (EditText) findViewById(R.id.txtName);
@@ -121,7 +168,7 @@ public class registerActivity extends AppCompatActivity {
                            UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
                                    .setDisplayName(fullName).build();
 
-                           user.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
+                           currentUser.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
                                @Override
                                public void onComplete(@NonNull Task<Void> task) {
                                    if (task.isSuccessful()) {
@@ -131,9 +178,55 @@ public class registerActivity extends AppCompatActivity {
                            });
 
 
-                           Intent intent = new Intent(registerActivity.this, listMainActivity.class);
-                           intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                           startActivity(intent);
+                           //getUid needs to assert that it is not null
+                           assert currentUser != null;
+                           //Create unique Id for User
+                           final String currentUserID = currentUser.getUid();
+
+                           //Create a user Map we can create a user in the User Collection
+                           Map<String, String> userObj = new HashMap<>();
+                           userObj.put("userId", currentUserID);
+                           userObj.put("username", username);
+
+                           userRefercence.add(userObj).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                               @Override
+                               public void onSuccess(DocumentReference documentReference) {
+                                   documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                       @Override
+                                       public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                           if (Objects.requireNonNull(task.getResult().exists())) {
+                                               progressBar.setVisibility(View.INVISIBLE);
+                                               String name = task.getResult()
+                                                       .getString("username");
+
+                                               GListApi gListApi = GListApi.getInstance(); //Global API; accessible by the all activities
+                                               gListApi.setUserId(currentUserID);
+                                               gListApi.setUsername(name);
+
+                                               Intent intent = new Intent(registerActivity.this, listMainActivity.class);
+                                               intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                               intent.putExtra("username", name);
+                                               intent.putExtra("userId", currentUserID);
+                                               startActivity(intent);
+
+
+                                           }else {
+                                               Log.d(TAG, "Failed to create GListApi ");
+                                               progressBar.setVisibility(View.INVISIBLE);
+                                           }
+                                       }
+                                   });
+                               }
+                           }).addOnFailureListener(new OnFailureListener() {
+                               @Override
+                               public void onFailure(@NonNull Exception e) {
+                                   Log.d(TAG, "Failed userReference.add:" + e.toString());
+
+                               }
+                           });
+
+
+
                        } else {
                            //sign up fails
                            Log.w(TAG, "createUserWithEmail: failure", task.getException());
@@ -158,13 +251,12 @@ public class registerActivity extends AppCompatActivity {
 
         //send verification email
         //start send email verification
-        final FirebaseUser user = mAuth.getCurrentUser();
-        user.sendEmailVerification().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+        currentUser.sendEmailVerification().addOnCompleteListener(this, new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
                     Toast.makeText(registerActivity.this,
-                            "Verification email sent to" + user.getEmail(),
+                            "Verification email sent to" + currentUser.getEmail(),
                             Toast.LENGTH_SHORT).show();
                 } else {
                     Log.e(TAG, "sendEmailVerification", task.getException());
@@ -195,43 +287,12 @@ public class registerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 EditText mEmailField = (EditText) findViewById(R.id.txtEmailReg);
                 EditText mPasswordField = (EditText) findViewById(R.id.txtPwdReg);
-
-                String email = mEmailField.getText().toString();
+                EditText mUsername = (EditText) findViewById(R.id.username_edittext_register);
+                String email = mEmailField.getText().toString().trim();
                 String password = mPasswordField.getText().toString();
-                createAccount(email, password);
+                String username = mUsername.getText().toString().trim();
+                createAccount(email, password, username);
 
-
-
-//                //need to create hashmap in order to pass data into FireStore db
-//                Map<String, Object> data = new HashMap<>();
-//                data.put(KEY_FULLNAME, fullName);
-//                data.put(KEY_EMAIL, EMail);
-//                data.put(KEY_PASSWORD, Pass);
-
-//                db.collection("Users")
-//                        .document(EMail).set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                        //Tells the User the Account was Created
-//                        Toast.makeText(registerActivity.this, "Success", Toast.LENGTH_LONG);
-//                        //Delays switch of Activity by 2 seconds in order for the User to read the Success Toast Message
-//                        new Handler().postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                Intent intent = new Intent(registerActivity.this, loginActivity.class);
-//                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                                startActivity(intent);
-//                            }
-//                        }, 2000);
-//
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        //to tell us what the error is
-//                        Log.d(TAG, "OnFailure: " + e.toString());
-//                    }
-//                });
 
             }
         });

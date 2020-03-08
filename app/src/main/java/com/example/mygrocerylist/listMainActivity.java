@@ -19,17 +19,22 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import Util.GroceryListApi;
+import util.GListApi;
+import model.GroceryList;
+import ui.GroceryListAdapter;
 
 public class listMainActivity extends AppCompatActivity {
     //Contain our List of Grocery Lists
@@ -41,14 +46,11 @@ public class listMainActivity extends AppCompatActivity {
     private static final String TAG = "listMainActivity";
 
     private RecyclerView recyclerView;
-    private GroceryListAdapter groceryListAdapter;
-    private RecyclerView.LayoutManager groceryListLayoutManager;
+    private GroceryListAdapter adapter;
 
 
 
-    //Keys
-    public static final String KEY_TITLE = "title";
-    public static final String KEY_DATE_CREATED = "created";
+
 
     //connection to FireStore
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -56,7 +58,9 @@ public class listMainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     private FirebaseAuth.AuthStateListener authStateListener;
-    private FirebaseUser user;
+    private FirebaseUser currentUser;
+    private String currentUserID;
+    private String currentUserName;
 
     //Collection Reference
     private CollectionReference G_L_Ref = db.collection("Grocery List");
@@ -72,13 +76,34 @@ public class listMainActivity extends AppCompatActivity {
         initAdd();
 
         mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
+
+        if(GListApi.getInstance() != null) {
+            currentUserID = GListApi.getInstance().getUserId();
+            currentUserName = GListApi.getInstance().getUsername();
+        }
 
         groceryLists = new ArrayList<>();
 
+
+
         recyclerView = findViewById(R.id.recyclerView);
+        //ensures that the size is fixed
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //Instantiating Authentication Listener
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                currentUser = firebaseAuth.getCurrentUser();
+                if (currentUser != null) {
+
+                }else {
+
+                }
+            }
+        };
+
 
 
     }
@@ -87,10 +112,11 @@ public class listMainActivity extends AppCompatActivity {
     protected synchronized void onResume() {
         super.onResume();
 
-       FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if(currentUser != null) {
-//            Toast.makeText(listMainActivity.this, "Welcome Back" + currentUser.getDisplayName(), Toast.LENGTH_SHORT).show();
-//        }
+       currentUser = mAuth.getCurrentUser();
+
+
+
+
 
     }
 
@@ -99,7 +125,7 @@ public class listMainActivity extends AppCompatActivity {
         super.onStart();
 
 
-        G_L_Ref.whereEqualTo("userId", GroceryListApi.getIstance().getUserId())
+        G_L_Ref.whereEqualTo("userId", GListApi.getInstance().getUserId())
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -111,11 +137,11 @@ public class listMainActivity extends AppCompatActivity {
                                 groceryLists.add(grocList);
                             }
                             //invoke RecyclerView
-                            groceryListAdapter = new GroceryListAdapter(listMainActivity.this,
+                            adapter = new GroceryListAdapter(listMainActivity.this,
                                     groceryLists);
-                            recyclerView.setAdapter(groceryListAdapter);
+                            recyclerView.setAdapter(adapter);
                             //updates itself if something changes
-                            groceryListAdapter.notifyDataSetChanged();
+                            adapter.notifyDataSetChanged();
 
                         }else {
 
@@ -169,6 +195,8 @@ public class listMainActivity extends AppCompatActivity {
                     Log.d(TAG, "Create List ");
                     //TODO Create GroceryList Object with FireStore
 
+
+
                     addList(listName);
 
 
@@ -193,8 +221,24 @@ public class listMainActivity extends AppCompatActivity {
         String listTitle = title;
 
         GroceryList newList = new GroceryList(title);
+        newList.setTimeAdded(new Timestamp(new Date()));
+        newList.setUserId(currentUserID);
+        newList.setUsername(currentUserName);
+        //Collection Reference
+        G_L_Ref.add(newList).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
 
-        G_L_Ref.add(newList);
+
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "failed to save: " + e.getMessage());
+            }
+        });
 
     }
 

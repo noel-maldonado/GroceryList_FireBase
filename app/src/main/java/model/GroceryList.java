@@ -1,4 +1,4 @@
-package com.example.mygrocerylist;
+package model;
 
 import android.os.SystemClock;
 
@@ -19,6 +19,10 @@ public class GroceryList {
     private int glistID;
     //Time Stamp
     private Timestamp timeAdded;
+
+    private String userId;
+    private String username;
+
 
     //need default constructor in order to store information in FireStore
     public GroceryList(){
@@ -83,5 +87,21 @@ public class GroceryList {
 
     public void setTimeAdded(Timestamp timeAdded) {
         this.timeAdded = timeAdded;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

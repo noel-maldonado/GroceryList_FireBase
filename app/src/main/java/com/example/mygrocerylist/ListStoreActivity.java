@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
+import model.Store;
+
 public class ListStoreActivity extends AppCompatActivity {
 
     ArrayList<Store> stores;

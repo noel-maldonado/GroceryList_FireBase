@@ -1,4 +1,4 @@
-package com.example.mygrocerylist;
+package ui;
 
 import android.content.Context;
 import android.text.format.DateUtils;
@@ -11,7 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import model.GroceryList;
+import com.example.mygrocerylist.R;
+
 import java.util.List;
 
 public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.ViewHolder> {
@@ -25,18 +27,19 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.
 
     @NonNull
     @Override
-    public GroceryListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item, parent, false);
+    public GroceryListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        View view = LayoutInflater.from(context)
+                .inflate(R.layout.list_item, viewGroup, false);
 
 
-        return new ViewHolder(view, parent.getContext());
+        return new ViewHolder(view, context);
     }
 
     @Override
     public void onBindViewHolder(@NonNull GroceryListAdapter.ViewHolder viewHolder, int position) {
 
         GroceryList glist = groceryList.get(position);
+
 
         viewHolder.title.setText(glist.getListTitle());
 

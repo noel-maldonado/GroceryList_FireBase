@@ -1,21 +1,22 @@
-package Util;
+package util;
 
 import android.app.Application;
 
-public class GroceryListApi extends Application {
+public class GListApi extends Application {
 
     private String username;
     private String userId;
-    private static GroceryListApi instance;
 
-    public static GroceryListApi getInstance() {
-        if (instance == null) {
-            instance = new GroceryListApi();
+    private static GListApi instance;
+
+    public GListApi() {}
+
+    public static GListApi getInstance() {
+        if(instance == null) {
+            instance = new GListApi();
         }
         return instance;
     }
-
-    public  GroceryListApi(){}
 
     public String getUsername() {
         return username;
