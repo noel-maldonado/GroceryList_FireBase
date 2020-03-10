@@ -47,7 +47,7 @@ public class GroceryList {
         return glistId;
     }
 
-    public void setGlistID(String glistID) {
+    public void setGlistId(String glistID) {
         this.glistId = glistID;
     }
 
