@@ -93,8 +93,6 @@ public class listMainActivity extends AppCompatActivity {
             }
         };
 
-
-
     }
 
     @Override

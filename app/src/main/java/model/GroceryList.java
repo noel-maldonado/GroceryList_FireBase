@@ -8,7 +8,7 @@ public class GroceryList {
     //Title of List
     private String listTitle;
     //id of List Item
-    private int glistID;
+    private String glistId;
     //Time Stamp
     private Timestamp timeAdded;
 
@@ -43,12 +43,12 @@ public class GroceryList {
         this.listTitle = mText1;
     }
 
-    public int getGlistID() {
-        return glistID;
+    public String getGlistId() {
+        return glistId;
     }
 
-    public void setGlistID(int glistID) {
-        this.glistID = glistID;
+    public void setGlistID(String glistID) {
+        this.glistId = glistID;
     }
 
     public Timestamp getTimeAdded() {

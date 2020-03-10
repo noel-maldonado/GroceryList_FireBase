@@ -139,6 +139,8 @@ public class CreateListActivity extends AppCompatActivity {
                                 G_L_Ref.add(newList).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                     @Override
                                     public void onSuccess(DocumentReference documentReference) {
+                                        String listId = documentReference.getId();
+                                        documentReference.update("glistId", listId);
                                         createProgress.setVisibility(View.INVISIBLE);
                                         Intent intent = new Intent(CreateListActivity.this, listMainActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
