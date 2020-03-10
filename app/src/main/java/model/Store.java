@@ -1,7 +1,5 @@
 package model;
 
-import android.graphics.Bitmap;
-
 public class Store {
 
     private String storeId;

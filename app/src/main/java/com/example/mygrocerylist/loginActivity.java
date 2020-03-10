@@ -70,7 +70,13 @@ public class loginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 currentUser = firebaseAuth.getCurrentUser();
 
+                if (currentUser != null) {
+                    //user is already logged in so they are sent to the entrance
 
+                } else {
+                    //no user yet; dont really need an else but I created it so what
+
+                }
 
             }
         };
@@ -85,18 +91,18 @@ public class loginActivity extends AppCompatActivity {
         //Check if user is signed in and update UI accordingly
         currentUser = firebaseAuth.getCurrentUser();
         firebaseAuth.addAuthStateListener(authStateListener);
-        if (currentUser != null) {
-            //Delays User to first Logged in Screen to send Welcome back message
-            Toast.makeText(loginActivity.this, "Welcome Back\n" + currentUser.getDisplayName(), Toast.LENGTH_SHORT).show();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(loginActivity.this, listMainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
-            },1000);
-        }
+//        if (currentUser != null) {
+//            //Delays User to first Logged in Screen to send Welcome back message
+//            Toast.makeText(loginActivity.this, "Welcome Back\n" + currentUser.getDisplayName(), Toast.LENGTH_SHORT).show();
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Intent intent = new Intent(loginActivity.this, listMainActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    startActivity(intent);
+//                }
+//            },1000);
+//        }
     }
 
     private void signIn(String email, String password) {
@@ -138,17 +144,29 @@ public class loginActivity extends AppCompatActivity {
                                                 for(QueryDocumentSnapshot snapshot: queryDocumentSnapshots) {
                                                     GListApi gListApi = GListApi.getInstance();
                                                     gListApi.setUsername(snapshot.getString("username"));
-                                                    gListApi.setUsername(snapshot.getString("userId"));
-                                                    //Send Welcome Message and Go to Main List Activity
-                                                    Toast.makeText(loginActivity.this, "Hello " + currentUser.getDisplayName(), Toast.LENGTH_SHORT).show();
-                                                    new Handler().postDelayed(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            Intent intent = new Intent(loginActivity.this, listMainActivity.class);
-                                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                            startActivity(intent);
-                                                        }
-                                                    },1000);
+                                                    gListApi.setUserId(snapshot.getString("userId"));
+
+
+                                                    if (gListApi.getUsername().equalsIgnoreCase("admin")) {
+                                                        Intent intent = new Intent(loginActivity.this, AdminPageActivity.class);
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                        startActivity(intent);
+
+                                                    } else {
+                                                        //Send Welcome Message and Go to Main List Activity
+                                                        Toast.makeText(loginActivity.this, "Hello " + currentUser.getDisplayName(), Toast.LENGTH_SHORT).show();
+                                                        new Handler().postDelayed(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                Intent intent = new Intent(loginActivity.this, listMainActivity.class);
+                                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                startActivity(intent);
+                                                            }
+                                                        }, 1000);
+
+                                                    }
+
+
                                                 }
 
 

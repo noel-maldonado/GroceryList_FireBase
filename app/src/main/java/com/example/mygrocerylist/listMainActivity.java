@@ -40,17 +40,11 @@ public class listMainActivity extends AppCompatActivity {
     //Contain our List of Grocery Lists
     private List<GroceryList> groceryLists;
 
-
-
     //Tag used for Log
     private static final String TAG = "listMainActivity";
 
     private RecyclerView recyclerView;
     private GroceryListAdapter adapter;
-
-
-
-
 
     //connection to FireStore
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -64,9 +58,6 @@ public class listMainActivity extends AppCompatActivity {
 
     //Collection Reference
     private CollectionReference G_L_Ref = db.collection("Grocery List");
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,12 +75,10 @@ public class listMainActivity extends AppCompatActivity {
 
         groceryLists = new ArrayList<>();
 
-
-
-        recyclerView = findViewById(R.id.recyclerView);
-        //ensures that the size is fixed
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView = findViewById(R.id.recyclerView);
+//        //ensures that the size is fixed
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Instantiating Authentication Listener
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -114,15 +103,16 @@ public class listMainActivity extends AppCompatActivity {
 
        currentUser = mAuth.getCurrentUser();
 
-
-
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        recyclerView = findViewById(R.id.recyclerView);
+        //ensures that the size is fixed
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
         G_L_Ref.whereEqualTo("userId", GListApi.getInstance().getUserId())
@@ -161,89 +151,19 @@ public class listMainActivity extends AppCompatActivity {
 
     }
 
-
-
     private void initAdd() {
         Button btnAdd = (Button) findViewById(R.id.addButton);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               createList();
+               Intent intent = new Intent(listMainActivity.this, CreateListActivity.class);
+               intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+               startActivity(intent);
+
             }
         });
 
     }
-
-
-    private void createList() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Enter List Name");
-        //set up the input
-        final EditText input = new EditText(this);
-        //specify the type of input expected
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
-        //places the EditText created in the AlertDialog
-        builder.setView(input);
-        //Set up AlertDialog Buttons
-        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String listName = input.getText().toString().trim();
-                if (listName.isEmpty()) {
-                    Toast.makeText(getBaseContext(), "List Name Can Not Be Empty.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.d(TAG, "Create List ");
-                    //TODO Create GroceryList Object with FireStore
-
-
-
-                    addList(listName);
-
-
-
-                }
-
-
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.show();
-
-    }
-
-    //Inserts GroceryList Object into G_L_REF (Reference/Table) to create a new document(Row)
-    private void addList(String title) {
-        String listTitle = title;
-
-        GroceryList newList = new GroceryList(title);
-        newList.setTimeAdded(new Timestamp(new Date()));
-        newList.setUserId(currentUserID);
-        newList.setUsername(currentUserName);
-        //Collection Reference
-        G_L_Ref.add(newList).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-
-
-
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "failed to save: " + e.getMessage());
-            }
-        });
-
-    }
-
-
-
 
     private void initLogOut() {
         Button btnLogOut = (Button) findViewById(R.id.logoutButton);
@@ -257,10 +177,5 @@ public class listMainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
 
 }

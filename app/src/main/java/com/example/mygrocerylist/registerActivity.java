@@ -117,7 +117,13 @@ public class registerActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(password)) {
             mPasswordField.setError("Required.");
             valid = false;
-        } else {
+        } else if (password.length() < 6) {
+            Toast.makeText(registerActivity.this,
+                    "Password needs to be at least 6 characters long",
+                    Toast.LENGTH_LONG).show();
+            valid = false;
+        }
+        else {
             mPasswordField.setError(null);
         }
 
@@ -221,6 +227,7 @@ public class registerActivity extends AppCompatActivity {
                                @Override
                                public void onFailure(@NonNull Exception e) {
                                    Log.d(TAG, "Failed userReference.add:" + e.toString());
+                                   progressBar.setVisibility(View.INVISIBLE);
 
                                }
                            });
@@ -232,12 +239,14 @@ public class registerActivity extends AppCompatActivity {
                            Log.w(TAG, "createUserWithEmail: failure", task.getException());
                            Toast.makeText(registerActivity.this, "Authentication failed.",
                                    Toast.LENGTH_SHORT).show();
+                           progressBar.setVisibility(View.INVISIBLE);
                        }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.d(TAG, "createUserWithEmail: method error" + e.toString());
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -292,7 +301,6 @@ public class registerActivity extends AppCompatActivity {
                 String password = mPasswordField.getText().toString();
                 String username = mUsername.getText().toString().trim();
                 createAccount(email, password, username);
-
 
             }
         });

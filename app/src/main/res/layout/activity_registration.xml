@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentStart="true"
     android:orientation="vertical"
     android:layout_alignParentTop="true"
+    android:fitsSystemWindows="true"
+
     >
 
 
@@ -13,137 +17,178 @@
             android:id="@+id/registerTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_gravity="center"
             android:text="Register New Account"
+            android:textColor="@android:color/black"
             android:textSize="25dp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:layout_gravity="center"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.073" />
+
         <ProgressBar
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center_horizontal"
             android:id="@+id/create_acct_progress"
+            style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?android:attr/progressBarStyleLarge"
+            android:layout_gravity="center_horizontal"
             android:visibility="invisible"
-            android:layout_marginBottom="20dp"
-            />
+            app:layout_constraintBottom_toTopOf="@+id/username_textview_register"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registerTitle"
+            app:layout_constraintVertical_bias="0.492" />
+
         <TextView
             android:id="@+id/username_textview_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
             android:text="Username"
             android:textColor="@android:color/black"
-            />
+            app:layout_constraintBottom_toTopOf="@+id/username_edittext_register"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.297"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registerTitle"
+            app:layout_constraintVertical_bias="1.0" />
 
         <EditText
             android:id="@+id/username_edittext_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="5dp"
             android:inputType="textPersonName"
-            android:maxLines="1" />
+            android:maxLines="1"
+            app:layout_constraintBottom_toTopOf="@+id/fstTxt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registerTitle"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/fstTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="5dp"
             android:text="Full Name"
             android:textColor="@android:color/black"
-            />
+            app:layout_constraintBottom_toTopOf="@+id/txtName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.296"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registerTitle"
+            app:layout_constraintVertical_bias="1.0" />
+
         <EditText
             android:id="@+id/txtName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
+            android:layout_marginTop="204dp"
             android:ems="10"
             android:maxLines="1"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toTopOf="@+id/secTxt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registerTitle"
+            app:layout_constraintVertical_bias="1.0" />
+
         <TextView
             android:id="@+id/secTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Email"
-            android:layout_marginLeft="100dp"
             android:textColor="@android:color/black"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.273"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <EditText
             android:id="@+id/txtEmailReg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
             android:ems="10"
             android:maxLines="1"
             android:textColor="@android:color/black"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.546" />
+
         <TextView
             android:id="@+id/thirdTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Password"
-            android:layout_marginLeft="100dp"
             android:textColor="@android:color/black"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.295"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.588" />
+
         <EditText
             android:id="@+id/txtPwdReg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            android:inputType="textPassword"
             android:ems="10"
+            android:inputType="textPassword"
             android:maxLines="1"
             android:textColor="@android:color/black"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.638" />
 
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="132dp"
             android:text="Create Account"
-            android:layout_marginTop="50dp"
             android:textColor="@android:color/black"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.77" />
 
         <TextView
             android:id="@+id/textViewAlreadyReg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_width="356dp"
+            android:layout_height="33dp"
+            android:gravity="center"
             android:text="Already Registered?"
-            android:textSize="20dp"
-            android:gravity="center"
             android:textColor="@android:color/black"
-            />
-
-
-        <TextView android:id="@+id/lnkLoginActivity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Login"
-            android:gravity="center"
             android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.49"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.912" />
+
+        <TextView
+            android:id="@+id/lnkLoginActivity"
+            android:layout_width="344dp"
+            android:layout_height="28dp"
+            android:gravity="center"
+            android:onClick="test"
+            android:text="Login"
             android:textColor="#3F51B5"
-            android:onClick="test"/>
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.492"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.953" />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

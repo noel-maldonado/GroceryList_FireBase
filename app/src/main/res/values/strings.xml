@@ -5,4 +5,23 @@
     <string name="Add">Add</string>
     <string name="list_button">list button</string>
     <string name="settings_button">settings button</string>
+    <string name="title_post">List Name</string>
+    <string name="create">Create</string>
+    <string name="create_message">Add a custom Image to replace the default image.</string>
+    <string name="product_name">Product Name</string>
+    <string name="product_price">Product Price without $ Symbol</string>
+    <string name="product_id">"Product Id (unique) "</string>
+    <string name="addProduct">Add Product</string>
+    <string name="addStore">Add Store</string>
+    <string name="productLocation">Product Location</string>
+    <string name="store">Store</string>
+    <string name="storee">Store</string>
+
+    <string-array name="stores">
+        <item>Kroger</item>
+        <item>Walmart</item>
+        <item>Publix</item>
+    </string-array>
+
+
 </resources>

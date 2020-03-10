@@ -1,20 +1,12 @@
 package model;
 
-import android.os.SystemClock;
-
 import com.google.firebase.Timestamp;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class GroceryList {
     //Image placed on List
-    private int mImageResource;
+    private String imageUrl;
     //Title of List
     private String listTitle;
-    //Date Created
-    private String mText2;
     //id of List Item
     private int glistID;
     //Time Stamp
@@ -26,51 +18,29 @@ public class GroceryList {
 
     //need default constructor in order to store information in FireStore
     public GroceryList(){
-        DateFormat df = new SimpleDateFormat("dd/MM/yy");
-        Date created = new Date();
-        mText2 = df.format(created);
     }
 
 
     public GroceryList(String title) {
         listTitle = title;
-        DateFormat df = new SimpleDateFormat("dd/MM/yy");
-        Date created = new Date();
-        mText2 = df.format(created);
     }
 
-    public GroceryList(int imageResource, String text1, String text2) {
-        mImageResource = imageResource;
-        listTitle = text1;
-        mText2 = text2;
-        DateFormat df = new SimpleDateFormat("dd/MM/yy");
-        Date created = new Date();
-        mText2 = df.format(created);
-    }
 
-    public int getImageResource() {
-        return mImageResource;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public String getListTitle() {
         return listTitle;
     }
 
-    public String getText2() {
-        return mText2;
-    }
-
-    public void setImageResource(int mImageResource) {
-        this.mImageResource = mImageResource;
+    public void setImageUrl(String mImageResource) {
+        this.imageUrl = mImageResource;
     }
 
 
     public void setListTitle(String mText1) {
         this.listTitle = mText1;
-    }
-
-    public void setText2(String mText2) {
-        this.mText2 = mText2;
     }
 
     public int getGlistID() {

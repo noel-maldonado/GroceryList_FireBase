@@ -1,33 +1,29 @@
 package model;
 
-import android.graphics.Bitmap;
 
-public class Product extends Store {
+public class Product {
 
-    private int itemID;
+    private String itemId;
     private String itemName;
-    private String itemCode;
-    private Bitmap picture;
+    private String productImageUrl;
     private int quantity;
     private double itemPrice;
+    private String productStore;
 
-    public Product(int itemID, String itemName, String itemCode, Bitmap picture, int quantity, double itemPrice, String storeName) {
-        super(storeName);
-        this.itemID = itemID;
-        this.itemName = itemName;
-        this.itemCode = itemCode;
-        this.picture = picture;
-        this.quantity = quantity;
-        this.itemPrice = itemPrice;
+
+    public Product() {
+        //by default quantity is 0
+        this.quantity = 0;
     }
 
 
-    public int getItemID() {
-        return itemID;
+
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setItemID(int itemID) {
-        this.itemID = itemID;
+    public void setItemId(String itemID) {
+        this.itemId = itemID;
     }
 
     public String getItemName() {
@@ -38,20 +34,12 @@ public class Product extends Store {
         this.itemName = itemName;
     }
 
-    public String getItemCode() {
-        return itemCode;
+    public String getProductImageUrl() {
+        return productImageUrl;
     }
 
-    public void setItemCode(String itemCode) {
-        this.itemCode = itemCode;
-    }
-
-    public Bitmap getPicture() {
-        return picture;
-    }
-
-    public void setPicture(Bitmap picture) {
-        this.picture = picture;
+    public void setProductImageUrl(String productImageUrl) {
+        this.productImageUrl = productImageUrl;
     }
 
     public int getQuantity() {
@@ -68,5 +56,13 @@ public class Product extends Store {
 
     public void setItemPrice(double itemPrice) {
         this.itemPrice = itemPrice;
+    }
+
+    public String getProductStore() {
+        return productStore;
+    }
+
+    public void setProductStore(String productStore) {
+        this.productStore = productStore;
     }
 }
