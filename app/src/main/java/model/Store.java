@@ -6,6 +6,7 @@ public class Store {
     private String storeName;
     private String storePictureUrl;
 
+
     public Store() {}
 
 
@@ -38,6 +39,8 @@ public class Store {
     public void setStorePictureUrl(String storePictureUrl) {
         this.storePictureUrl = storePictureUrl;
     }
+
+
 }
 
 

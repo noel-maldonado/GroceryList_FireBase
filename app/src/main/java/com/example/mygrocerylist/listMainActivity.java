@@ -75,10 +75,10 @@ public class listMainActivity extends AppCompatActivity {
 
         groceryLists = new ArrayList<>();
 
-//        recyclerView = findViewById(R.id.recyclerView);
-//        //ensures that the size is fixed
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView = findViewById(R.id.recyclerView);
+        //ensures that the size is fixed
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Instantiating Authentication Listener
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -96,16 +96,58 @@ public class listMainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected synchronized void onResume() {
+    protected void onResume() {
         super.onResume();
 
        currentUser = mAuth.getCurrentUser();
+
+//        recyclerView = findViewById(R.id.recyclerView);
+//        //ensures that the size is fixed
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//
+//
+//        G_L_Ref.whereEqualTo("userId", GListApi.getInstance().getUserId())
+//                .get()
+//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                        if(!queryDocumentSnapshots.isEmpty()) {
+//                            //FireStore Query using For Loop to add grocerylist in database to local list<GroceryList>
+//                            for(QueryDocumentSnapshot glists : queryDocumentSnapshots) {
+//                                GroceryList grocList = glists.toObject(GroceryList.class);
+//                                groceryLists.add(grocList);
+//                            }
+//                            //invoke RecyclerView
+//                            adapter = new GroceryListAdapter(listMainActivity.this,
+//                                    groceryLists);
+//                            recyclerView.setAdapter(adapter);
+//                            //updates itself if something changes
+//                            adapter.notifyDataSetChanged();
+//
+//                        }else {
+//
+//                            TextView noListMessage = (TextView) findViewById(R.id.noListMessage);
+//                            noListMessage.setVisibility(View.VISIBLE);
+//
+//                        }
+//
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//
+//                    }
+//                });
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        final List<GroceryList> groceryLists = new ArrayList<>();
 
         recyclerView = findViewById(R.id.recyclerView);
         //ensures that the size is fixed

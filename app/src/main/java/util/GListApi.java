@@ -6,6 +6,10 @@ public class GListApi extends Application {
 
     private String username;
     private String userId;
+    private String glistId;
+    private String listTitle;
+    private String storeId;
+    private String storeName;
 
     private static GListApi instance;
 
@@ -16,6 +20,22 @@ public class GListApi extends Application {
             instance = new GListApi();
         }
         return instance;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
     }
 
     public String getUsername() {
@@ -32,5 +52,21 @@ public class GListApi extends Application {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getGlistId() {
+        return glistId;
+    }
+
+    public void setGlistId(String glistId) {
+        this.glistId = glistId;
+    }
+
+    public String getListTitle() {
+        return listTitle;
+    }
+
+    public void setListTitle(String listTitle) {
+        this.listTitle = listTitle;
     }
 }
