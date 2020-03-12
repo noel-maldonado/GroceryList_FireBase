@@ -31,7 +31,6 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.list_item, viewGroup, false);
 
-
         return new ViewHolder(view, context);
     }
 
@@ -70,14 +69,9 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.
         public ViewHolder(@NonNull View itemView, Context ctx) {
             super(itemView);
             context = ctx;
-
             title = itemView.findViewById(R.id.line1TextView);
             dateCreated = itemView.findViewById(R.id.line2TextView);
             image = itemView.findViewById(R.id.imageView);
-
-
-
-
         }
     }
 }
