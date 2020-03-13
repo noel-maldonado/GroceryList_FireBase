@@ -94,10 +94,11 @@ public class registerActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
-    private boolean validateForm() {
+
+
+    private boolean validateForm(){
         EditText mEmailField = (EditText) findViewById(R.id.txtEmailReg);
         EditText mPasswordField = (EditText) findViewById(R.id.txtPwdReg);
         EditText mUsername = (EditText) findViewById(R.id.username_edittext_register);
