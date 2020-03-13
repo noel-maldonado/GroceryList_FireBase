@@ -10,6 +10,7 @@ public class GListApi extends Application {
     private String listTitle;
     private String storeId;
     private String storeName;
+    private String storePictureUrl;
 
     private static GListApi instance;
 
@@ -68,5 +69,13 @@ public class GListApi extends Application {
 
     public void setListTitle(String listTitle) {
         this.listTitle = listTitle;
+    }
+
+    public String getStorePictureUrl() {
+        return storePictureUrl;
+    }
+
+    public void setStorePictureUrl(String storePictureUrl) {
+        this.storePictureUrl = storePictureUrl;
     }
 }

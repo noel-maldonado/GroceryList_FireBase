@@ -40,7 +40,6 @@ public class Store {
         this.storePictureUrl = storePictureUrl;
     }
 
-
 }
 
 

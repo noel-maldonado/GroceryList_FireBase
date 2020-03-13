@@ -11,7 +11,6 @@ public class GroceryList {
     private String glistId;
     //Time Stamp
     private Timestamp timeAdded;
-
     private String userId;
     private String username;
 

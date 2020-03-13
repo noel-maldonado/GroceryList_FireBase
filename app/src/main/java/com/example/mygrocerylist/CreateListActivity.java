@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 import model.GroceryList;
+import model.StoreProduct;
 import ui.GroceryListAdapter;
 import util.GListApi;
 
@@ -141,6 +142,8 @@ public class CreateListActivity extends AppCompatActivity {
                                     public void onSuccess(DocumentReference documentReference) {
                                         String listId = documentReference.getId();
                                         documentReference.update("glistId", listId);
+                                        StoreProduct storeProduct = new StoreProduct();
+                                        documentReference.collection("Store_Product").add(storeProduct);
                                         createProgress.setVisibility(View.INVISIBLE);
                                         Intent intent = new Intent(CreateListActivity.this, listMainActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

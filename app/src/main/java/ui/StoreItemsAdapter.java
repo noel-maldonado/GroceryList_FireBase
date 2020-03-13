@@ -1,6 +1,9 @@
 package ui;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +15,39 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mygrocerylist.R;
+import com.example.mygrocerylist.listMainActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import model.Product;
+import model.StoreProduct;
+import util.GListApi;
 
 public class StoreItemsAdapter extends RecyclerView.Adapter<StoreItemsAdapter.ViewHolder> {
     private Context context;
     private List<Product> productList;
+    private String currentUserID;
+    private String currentUserName;
+    private String listTitle;
+    private String glistId;
+    private String storeId;
+    private String storeName;
+    private String storePictureUrl;
+
+    //connection to FireStore
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    //Grocery List Collection Reference
+    private CollectionReference groceryListProductCollectionReference = db.collection("Grocery List");
+
+    private String TAG = "StoreItemsAdapter";
 
 
     public StoreItemsAdapter(Context context, List<Product> product) {
@@ -47,9 +74,10 @@ public class StoreItemsAdapter extends RecyclerView.Adapter<StoreItemsAdapter.Vi
         String itemPriceText = "" + itemPrice;
         int quantity = product.getQuantity();
         String quantityText = "" + quantity;
+
         viewHolder.productPriceTextView.setText(itemPriceText);
         viewHolder.productNameTextView.setText(product.getItemName());
-        viewHolder.quantityTextView.setText(quantityText);
+        viewHolder.quantityTextView.setText("" + product.getQuantity());
         Double total = ((double) quantity) * itemPrice;
         String totalText = "" + total;
         viewHolder.productsTotalTextView.setText(totalText);
@@ -79,8 +107,6 @@ public class StoreItemsAdapter extends RecyclerView.Adapter<StoreItemsAdapter.Vi
             super(itemView);
             context = ctx;
 
-            itemView.setOnClickListener(this);
-
             //Image
             imageViewProduct = itemView.findViewById(R.id.imageViewProduct);
             imageViewProduct.setEnabled(false);
@@ -94,7 +120,7 @@ public class StoreItemsAdapter extends RecyclerView.Adapter<StoreItemsAdapter.Vi
             //Buttons
             buttonAddQuantity = itemView.findViewById(R.id.buttonAddQuantity);
             buttonSubtractQuantity = itemView.findViewById(R.id.buttonSubtractQuantity);
-
+            //adding on click listeners to buttons
             buttonSubtractQuantity.setOnClickListener(this);
             buttonAddQuantity.setOnClickListener(this);
 
@@ -103,24 +129,100 @@ public class StoreItemsAdapter extends RecyclerView.Adapter<StoreItemsAdapter.Vi
 
         @Override
         public void onClick(View v) {
-
+            //get item position
             int position = getAdapterPosition();
+            //create a Product Object from the Product List Array using the items position
             Product product = productList.get(position);
+            //get the quantity of the object
             int quantity = product.getQuantity();
+
             switch (v.getId()) {
 
                 case R.id.buttonAddQuantity:
-                    product.setQuantity(quantity + 1);
+                    product.setQuantity(product.getQuantity() + 1);
+                    notifyItemChanged(position);
+                    Log.d(TAG, "Add Button: " +getAdapterPosition());
+
+
                     break;
 
                 case R.id.buttonSubtractQuantity:
-                    product.setQuantity(quantity - 1);
+                    if (product.getQuantity() > 0) {
+                        product.setQuantity(product.getQuantity() - 1);
+                        notifyItemChanged(position);
+                        Log.d(TAG, "Subtract Button: " + getAdapterPosition());
+
+
+
+                    }
+                    break;
             }
-
-
 
         }
     }
 
+
+    public void saveBtn() {
+
+        Log.d(TAG, "saveBtn method ran");
+        if(GListApi.getInstance() != null) {
+            currentUserID = GListApi.getInstance().getUserId();
+            currentUserName = GListApi.getInstance().getUsername();
+            listTitle = GListApi.getInstance().getListTitle();
+            glistId = GListApi.getInstance().getGlistId();
+            storeName = GListApi.getInstance().getStoreName();
+            storeId = GListApi.getInstance().getStoreId();
+            storePictureUrl = GListApi.getInstance().getStorePictureUrl();
+        }
+        GListApi gListApi = GListApi.getInstance();
+        assert gListApi != null;
+        gListApi.setUsername(currentUserName);
+        gListApi.setUserId(currentUserID);
+        gListApi.setGlistId(glistId);
+        gListApi.setListTitle(listTitle);
+        gListApi.setStoreId(storeId);
+        gListApi.setStoreName(storeName);
+        gListApi.setStorePictureUrl(storePictureUrl);
+
+        final String document = gListApi.getGlistId();
+
+        //Using for loop to look through each Product in the Array List
+        for(int i = 0; i < productList.size(); i++) {
+            Product product = productList.get(i);
+            if(product.getQuantity() > 0) {
+
+                StoreProduct storeProduct = new StoreProduct();
+                storeProduct.setItemId(product.getItemId());
+                storeProduct.setItemName(product.getItemName());
+                storeProduct.setItemPrice(product.getItemPrice());
+                storeProduct.setProductImageUrl(product.getProductImageUrl());
+                storeProduct.setQuantity(product.getQuantity());
+                storeProduct.setStoreId(gListApi.getStoreId());
+                storeProduct.setStoreName(gListApi.getStoreName());
+                storeProduct.setStorePictureUrl(gListApi.getStorePictureUrl());
+                groceryListProductCollectionReference.document("" + document)
+                        .collection("Store_Product")
+                        .add(storeProduct).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(final DocumentReference documentReference) {
+                        Log.d(TAG, "Successfully Added Sub Collection Document");
+                        String listId = documentReference.getId();
+                        documentReference.update("documentReference", listId);
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Failed to add Sub Collection");
+
+                    }
+                });
+            }
+
+        }
+        Intent intent = new Intent(context, listMainActivity.class);
+        context.startActivity(intent);
+
+    }
 
 }

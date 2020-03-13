@@ -3,6 +3,7 @@ package com.example.mygrocerylist;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,6 +12,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,8 +66,7 @@ public class listMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initLogOut();
-        initAdd();
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -100,52 +102,6 @@ public class listMainActivity extends AppCompatActivity {
         super.onResume();
 
        currentUser = mAuth.getCurrentUser();
-
-//        recyclerView = findViewById(R.id.recyclerView);
-//        //ensures that the size is fixed
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//
-//
-//        G_L_Ref.whereEqualTo("userId", GListApi.getInstance().getUserId())
-//                .get()
-//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                        if(!queryDocumentSnapshots.isEmpty()) {
-//                            //FireStore Query using For Loop to add grocerylist in database to local list<GroceryList>
-//                            for(QueryDocumentSnapshot glists : queryDocumentSnapshots) {
-//                                GroceryList grocList = glists.toObject(GroceryList.class);
-//                                groceryLists.add(grocList);
-//                            }
-//                            //invoke RecyclerView
-//                            adapter = new GroceryListAdapter(listMainActivity.this,
-//                                    groceryLists);
-//                            recyclerView.setAdapter(adapter);
-//                            //updates itself if something changes
-//                            adapter.notifyDataSetChanged();
-//
-//                        }else {
-//
-//                            TextView noListMessage = (TextView) findViewById(R.id.noListMessage);
-//                            noListMessage.setVisibility(View.VISIBLE);
-//
-//                        }
-//
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//
-//                    }
-//                });
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
 
         final List<GroceryList> groceryLists = new ArrayList<>();
 
@@ -189,33 +145,115 @@ public class listMainActivity extends AppCompatActivity {
                     }
                 });
 
-    }
-
-    private void initAdd() {
-        Button btnAdd = (Button) findViewById(R.id.addButton);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               Intent intent = new Intent(listMainActivity.this, CreateListActivity.class);
-               intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-               startActivity(intent);
-
-            }
-        });
 
     }
 
-    private void initLogOut() {
-        Button btnLogOut = (Button) findViewById(R.id.logoutButton);
-        btnLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                Intent intent = new Intent(listMainActivity.this, loginActivity.class);
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        final List<GroceryList> groceryLists = new ArrayList<>();
+
+        recyclerView = findViewById(R.id.recyclerView);
+        //ensures that the size is fixed
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+        G_L_Ref.whereEqualTo("userId", GListApi.getInstance().getUserId())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(!queryDocumentSnapshots.isEmpty()) {
+                            //FireStore Query using For Loop to add grocerylist in database to local list<GroceryList>
+                            for(QueryDocumentSnapshot glists : queryDocumentSnapshots) {
+                                GroceryList grocList = glists.toObject(GroceryList.class);
+                                groceryLists.add(grocList);
+                            }
+                            //invoke RecyclerView
+                            adapter = new GroceryListAdapter(listMainActivity.this,
+                                    groceryLists);
+                            new ItemTouchHelper(itemTouchHelpCallback).attachToRecyclerView(recyclerView);
+                            recyclerView.setAdapter(adapter);
+                            //updates itself if something changes
+                            adapter.notifyDataSetChanged();
+
+                        }else {
+
+                            TextView noListMessage = (TextView) findViewById(R.id.noListMessage);
+                            noListMessage.setVisibility(View.VISIBLE);
+
+                        }
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+
+    }
+
+
+    //adds the custom Menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+
+
+    // adds the functionality of the buttons in the Menu
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_signout_main:
+                //Signs Out the User
+                if (currentUser != null && mAuth != null) {
+                    mAuth.signOut();
+                    Intent intent = new Intent(listMainActivity.this, loginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.action_settings_main:
+
+
+                break;
+            case R.id.action_add:
+                Intent intent = new Intent(listMainActivity.this, CreateListActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-            }
-        });
+                break;
+
+
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelpCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            adapter.deleteItem();
+            Log.d(TAG,"Item Swiped");
+        }
+    };
+
+
+
+
 
 }

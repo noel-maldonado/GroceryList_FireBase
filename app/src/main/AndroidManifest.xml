@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminPageActivity"></activity>
+        <activity android:name=".ListItemsSavedActivity"></activity>
+        <activity android:name=".AdminPageActivity" />
         <activity android:name=".CreateProductActivity" />
         <activity android:name=".TempStoreCreationActivity" />
         <activity android:name=".CreateListActivity" />

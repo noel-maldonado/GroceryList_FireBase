@@ -10,7 +10,7 @@
         android:layout_width="411dp"
         android:layout_height="111dp"
         android:layout_margin="4dp"
-
+        android:padding="4dp"
         >
 
         <ImageView

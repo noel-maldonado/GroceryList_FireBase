@@ -3,7 +3,10 @@ package com.example.mygrocerylist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
@@ -25,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import model.Store;
+import model.StoreProduct;
 import ui.StoreListAdapter;
 import util.GListApi;
 
@@ -56,11 +60,13 @@ public class ListStoreActivity extends AppCompatActivity {
     //Collection Reference
     private CollectionReference storeCollectionReference = db.collection("Store");
 
+    //Collection Reference
+    private CollectionReference G_L_Ref = db.collection("Grocery List");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_list);
-        initHomeListButton();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -93,17 +99,44 @@ public class ListStoreActivity extends AppCompatActivity {
 
     }
 
-    private void initHomeListButton() {
-        ImageButton ibList = (ImageButton) findViewById(R.id.listImageButtonStore);
-        ibList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    //adds the custom Menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_store, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // adds the functionality of the buttons in the Menu
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_signout_store:
+                //Signs Out the User
+                if (currentUser != null && mAuth != null) {
+                    mAuth.signOut();
+                    Intent intent = new Intent(ListStoreActivity.this, loginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.action_settings_store_items:
+
+
+                break;
+
+            case R.id.action_menu_store:
                 Intent intent = new Intent(ListStoreActivity.this, listMainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-            }
-        });
+                break;
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
+
+
 
 
     @Override
@@ -111,6 +144,16 @@ public class ListStoreActivity extends AppCompatActivity {
         super.onResume();
         final List<Store> storeList =  new ArrayList<>();
         currentUser = mAuth.getCurrentUser();
+
+        setAdapter();
+
+    }
+
+    //Adapter set to show All stores if no items have been saved or only the Items that have been saved;
+    public void setAdapter() {
+        final List<Store> storeList =  new ArrayList<>();
+        currentUser = mAuth.getCurrentUser();
+
 
         recyclerView = findViewById(R.id.recyclerViewStore);
         recyclerView.setHasFixedSize(true);
@@ -145,8 +188,13 @@ public class ListStoreActivity extends AppCompatActivity {
         });
 
 
-
-
-
     }
+
+
+
+
+
+
+
+
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_add"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="New List"
+        app:showAsAction="ifRoom" />
+
+
+    <item
+        android:id="@+id/action_settings_main"
+        android:title="Settings"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_signout_main"
+        android:title="Sign out"
+        app:showAsAction="never"
+        />
+
+</menu>

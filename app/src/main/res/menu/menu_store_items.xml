@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_menu_store_items"
+        android:icon="@drawable/list"
+        android:title="Main Menu"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_save_store_items"
+        android:icon="@android:drawable/ic_menu_save"
+        app:showAsAction="ifRoom"
+        android:title="Save"
+        />
+    <item
+        android:id="@+id/action_settings_store_items"
+        android:title="Settings"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_signout_store_items"
+        android:title="Sign out"
+        app:showAsAction="never"
+        />
+
+
+</menu>

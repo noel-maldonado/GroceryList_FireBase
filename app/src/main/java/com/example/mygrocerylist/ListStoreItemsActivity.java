@@ -3,6 +3,8 @@ package com.example.mygrocerylist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -28,10 +30,14 @@ import ui.StoreItemsAdapter;
 import util.GListApi;
 
 public class ListStoreItemsActivity extends AppCompatActivity {
-
+    //Main List Title
     private String listTitle;
+    //Main List Document ID
     private String glistId;
-
+    //Store Name
+    private String storeName;
+    //Store id
+    private String storeId;
 
     //Tag used for Log
     private static final String TAG = "ListStoreItemsActivity";
@@ -46,19 +52,22 @@ public class ListStoreItemsActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseUser currentUser;
 
-
+    //Current User Id
     private String currentUserID;
+    //Current User name
     private String currentUserName;
-
+    //Product Collection Reference
     private CollectionReference productCollectionReference = db.collection("Product");
-
+    //Grocery List Collection Reference
+    private CollectionReference groceryListProductCollectionReference = db.collection("Grocery List");
+    //Store Collection Reference
+    private CollectionReference storeCollectionReference = db.collection("Store");
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_items);
-        initHomeListButton();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -67,6 +76,9 @@ public class ListStoreItemsActivity extends AppCompatActivity {
             currentUserName = GListApi.getInstance().getUsername();
             listTitle = GListApi.getInstance().getListTitle();
             glistId = GListApi.getInstance().getGlistId();
+            storeName = GListApi.getInstance().getStoreName();
+            storeId = GListApi.getInstance().getStoreId();
+
         }
 
         recyclerView = findViewById(R.id.recyclerViewItems);
@@ -126,9 +138,6 @@ public class ListStoreItemsActivity extends AppCompatActivity {
                         }
 
 
-
-
-
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -143,19 +152,47 @@ public class ListStoreItemsActivity extends AppCompatActivity {
 
     }
 
-    private void initHomeListButton() {
-        ImageButton ibList = (ImageButton) findViewById(R.id.listImageButtonItems);
-        ibList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ListStoreItemsActivity.this, listMainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
+    //adds the custom Menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_store_items, menu);
+        return super.onCreateOptionsMenu(menu);
+
     }
 
 
+    // adds the functionality of the buttons in the Menu
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_signout_store_items:
+                //Signs Out the User
+                if (currentUser != null && mAuth != null) {
+                    mAuth.signOut();
+                    Intent intent = new Intent(ListStoreItemsActivity.this, loginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.action_settings_store_items:
+
+
+                break;
+            case R.id.action_save_store_items:
+                adapter.saveBtn();
+
+                break;
+            case R.id.action_menu_store_items:
+                Intent intent = new Intent(ListStoreItemsActivity.this, listMainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
 
 
 

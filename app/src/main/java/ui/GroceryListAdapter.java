@@ -3,6 +3,7 @@ package ui;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,21 +15,42 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import model.GroceryList;
+import model.StoreProduct;
 import util.GListApi;
 
+import com.example.mygrocerylist.ListItemsSavedActivity;
 import com.example.mygrocerylist.ListStoreActivity;
 import com.example.mygrocerylist.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.ViewHolder> {
+
+    //Tag used for Log
+    private static final String TAG = "GroceryListAdapter";
+
     private Context context;
     private List<GroceryList> groceryList;
     private String currentUserID;
     private String currentUserName;
     private String listTitle;
     private String glistId;
+    private int position;
+
+    //connection to FireStore
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    //Collection Reference
+    private CollectionReference G_L_Ref = db.collection("Grocery List");
 
 
     public GroceryListAdapter(Context context, List<GroceryList> groceryList) {
@@ -104,10 +126,11 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.
 
         @Override
         public void onClick(View v) {
-            int position = getAdapterPosition();
+            position = getAdapterPosition();
             GroceryList current = groceryList.get(position);
             listTitle = current.getListTitle();
             glistId = current.getGlistId();
+
 
             if(GListApi.getInstance() != null) {
                 currentUserID = GListApi.getInstance().getUserId();
@@ -116,15 +139,104 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.
                 currentUserID = current.getUserId();
                 currentUserName = current.getUsername();
             }
+
             GListApi gListApi = GListApi.getInstance();
             gListApi.setUsername(currentUserName);
             gListApi.setUserId(currentUserID);
             gListApi.setGlistId(glistId);
             gListApi.setListTitle(listTitle);
+            DocumentReference documentReference = G_L_Ref.document("" + current.getGlistId());
 
-            Intent intent = new Intent(context, ListStoreActivity.class);
-            context.startActivity(intent);
+
+
+            G_L_Ref.document("" + glistId).collection("Store_Product").get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            int size = 0;
+                            for (DocumentSnapshot document : queryDocumentSnapshots) {
+                                size++;
+                            }
+                            if(size  > 1) {
+                                Intent intent = new Intent(context, ListItemsSavedActivity.class);
+                                context.startActivity(intent);
+
+                            }else {
+                                Intent intent = new Intent(context, ListStoreActivity.class);
+                                context.startActivity(intent);
+
+
+                            }
+                        }
+                    });
+
+
 
         }
+
+
     }
+
+
+
+
+
+
+
+    public void deleteItem() {
+        GroceryList current = groceryList.get(position);
+        final String document = current.getGlistId();
+
+        G_L_Ref.document("" + document).collection("Store_Product").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                //Get the a snapshot for evey Document in the Store_Product Subcollection
+                for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
+                    StoreProduct storeProduct = documentSnapshot.toObject(StoreProduct.class);
+                    final String docId = storeProduct.getDocumentReference();
+                    G_L_Ref.document("" + document).collection("Store_Product")
+                            .document("" + docId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "SubCollection Document delete: " + docId);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "Failed to Delete Sub Collection: " + docId +"\n " +e.getMessage() );
+                        }
+                    });
+
+
+                }
+
+
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+
+        G_L_Ref.document("" + document).delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Succesfully delete" + document);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Failed to Delete" + e.getMessage());
+                    }
+                });
+
+
+    }
+
 }

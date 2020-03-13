@@ -28,8 +28,6 @@ public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.View
     private String currentUserName;
     private String listTitle;
     private String glistId;
-    private String storeId;
-    private String storeName;
 
     public StoreListAdapter(Context context, List<Store> store) {
         this.context = context;
@@ -90,9 +88,9 @@ public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.View
             int position = getAdapterPosition();
             Store current = storeList.get(position);
 
-            storeId = current.getStoreId();
-            storeName = current.getStoreName();
-
+            String storeId = current.getStoreId();
+            String storeName = current.getStoreName();
+            String storePictureUrl = current.getStorePictureUrl();
 
             if(GListApi.getInstance() != null) {
                 currentUserID = GListApi.getInstance().getUserId();
@@ -102,15 +100,18 @@ public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.View
             }
 
             GListApi gListApi = GListApi.getInstance();
+            assert gListApi != null;
             gListApi.setUsername(currentUserName);
             gListApi.setUserId(currentUserID);
             gListApi.setGlistId(glistId);
             gListApi.setListTitle(listTitle);
             gListApi.setStoreId(storeId);
             gListApi.setStoreName(storeName);
+            gListApi.setStorePictureUrl(storePictureUrl);
 
             Intent intent = new Intent(context, ListStoreItemsActivity.class);
             context.startActivity(intent);
         }
+
     }
 }
