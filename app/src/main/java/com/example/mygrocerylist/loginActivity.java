@@ -61,7 +61,7 @@ public class loginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        initRegisterTextView();
+        initRegisterButton();
         initLoginButton();
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -226,9 +226,9 @@ public class loginActivity extends AppCompatActivity {
 
 
 
-    private void initRegisterTextView() {
-        TextView tvRegister = (TextView) findViewById(R.id.lnkregisterActivity);
-        tvRegister.setOnClickListener(new View.OnClickListener() {
+    private void initRegisterButton() {
+        Button btnRegister = (Button) findViewById(R.id.lnkregisterActivity);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(loginActivity.this, registerActivity.class);

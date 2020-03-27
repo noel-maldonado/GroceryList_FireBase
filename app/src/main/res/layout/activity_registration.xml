@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentStart="true"
-    android:orientation="vertical"
     android:layout_alignParentTop="true"
+    android:background="#050505"
     android:fitsSystemWindows="true"
 
-    >
+
+    android:orientation="vertical">
 
 
-        <TextView
+        <ImageView
             android:id="@+id/registerTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="180dp"
+            android:layout_height="129dp"
             android:layout_gravity="center"
-            android:text="Register New Account"
-            android:textColor="@android:color/black"
-            android:textSize="25dp"
-            android:textStyle="bold"
+            android:src="@drawable/final_logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.073" />
+            app:layout_constraintVertical_bias="0.019"
+             />
 
         <ProgressBar
             android:id="@+id/create_acct_progress"
@@ -47,13 +46,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Username"
-            android:textColor="@android:color/black"
             app:layout_constraintBottom_toTopOf="@+id/username_edittext_register"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.297"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registerTitle"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="1.0"
+            android:textColor="@android:color/background_light"
+            android:textColorHint="@android:color/background_light"
+            />
 
         <EditText
             android:id="@+id/username_edittext_register"
@@ -66,20 +67,27 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registerTitle"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="1.0"
+            android:textColor="@android:color/background_light"
+            android:textColorHint="@android:color/background_light"
+            android:backgroundTint="@android:color/background_light"
+
+            />
 
         <TextView
             android:id="@+id/fstTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Full Name"
-            android:textColor="@android:color/black"
             app:layout_constraintBottom_toTopOf="@+id/txtName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.296"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registerTitle"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="1.0"
+            android:textColor="@android:color/background_light"
+            android:textColorHint="@android:color/background_light"
+            />
 
         <EditText
             android:id="@+id/txtName"
@@ -88,24 +96,30 @@
             android:layout_marginTop="204dp"
             android:ems="10"
             android:maxLines="1"
-            android:textColor="@android:color/black"
             app:layout_constraintBottom_toTopOf="@+id/secTxt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registerTitle"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="1.0"
+            android:textColor="@android:color/background_light"
+            android:textColorHint="@android:color/background_light"
+            android:backgroundTint="@android:color/background_light"
+
+            />
 
         <TextView
             android:id="@+id/secTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Email"
-            android:textColor="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.273"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@android:color/background_light"
+            android:textColorHint="@android:color/background_light"
+            />
 
         <EditText
             android:id="@+id/txtEmailReg"
@@ -113,25 +127,31 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:maxLines="1"
-            android:textColor="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.546" />
+            app:layout_constraintVertical_bias="0.546"
+            android:textColor="@android:color/background_light"
+            android:textColorHint="@android:color/background_light"
+            android:backgroundTint="@android:color/background_light"
+
+            />
 
         <TextView
             android:id="@+id/thirdTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Password"
-            android:textColor="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.295"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.588" />
+            app:layout_constraintVertical_bias="0.588"
+            android:textColor="@android:color/background_light"
+            android:textColorHint="@android:color/background_light"
+            />
 
         <EditText
             android:id="@+id/txtPwdReg"
@@ -140,19 +160,25 @@
             android:ems="10"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:textColor="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.638" />
+            app:layout_constraintVertical_bias="0.638"
+            android:textColor="@android:color/background_light"
+            android:textColorHint="@android:color/background_light"
+            android:backgroundTint="@android:color/background_light"
+
+            />
 
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#1F749C"
+            android:padding="10dp"
             android:text="Create Account"
-            android:textColor="@android:color/black"
+            android:textColor="#F8F7F7"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.503"
@@ -166,14 +192,16 @@
             android:layout_height="33dp"
             android:gravity="center"
             android:text="Already Registered?"
-            android:textColor="@android:color/black"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.912" />
+            app:layout_constraintVertical_bias="0.912"
+            android:textColor="@android:color/background_light"
+            android:textColorHint="@android:color/background_light"
+            />
 
         <TextView
             android:id="@+id/lnkLoginActivity"
@@ -182,8 +210,9 @@
             android:gravity="center"
             android:onClick="test"
             android:text="Login"
-            android:textColor="#3F51B5"
+            android:textColor="#27669E"
             android:textSize="20dp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.492"

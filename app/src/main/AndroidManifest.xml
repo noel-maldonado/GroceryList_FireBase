@@ -15,11 +15,13 @@
         <activity android:name=".CreateProductActivity" />
         <activity android:name=".TempStoreCreationActivity" />
         <activity android:name=".CreateListActivity" />
-        <activity android:name=".registerActivity" />
+        <activity android:name=".registerActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".listMainActivity" />
         <activity android:name=".ListStoreActivity" />
         <activity android:name=".ListStoreItemsActivity" />
-        <activity android:name=".loginActivity">
+        <activity android:name=".loginActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
