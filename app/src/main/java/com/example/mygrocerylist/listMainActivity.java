@@ -295,6 +295,8 @@ public class listMainActivity extends AppCompatActivity {
 
     private void initNameTextView(){
         TextView name = (TextView) findViewById(R.id.name);
+        currentUser = mAuth.getCurrentUser();
+        name.setText("Welcome " + currentUser.getDisplayName() + "!");
         final Animation slideRight = AnimationUtils.loadAnimation(this, R.anim.slide_to_right);
         name.startAnimation(slideRight);
     }

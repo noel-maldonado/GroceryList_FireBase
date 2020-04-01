@@ -50,7 +50,7 @@ public class ListItemsSavedActivity extends AppCompatActivity {
 
     //GroceryList Reference
     private CollectionReference groceryListReference = db.collection("Grocery List");
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
