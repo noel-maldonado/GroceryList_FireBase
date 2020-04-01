@@ -86,7 +86,7 @@ public class listMainActivity extends AppCompatActivity {
         initNameTextView();
         //Takes you to the next layout
         initAddBtn();
-        //Logs out the use
+        //Logs out the user
         initLogoutBtn();
 
         recyclerView = findViewById(R.id.recyclerView);
@@ -107,6 +107,8 @@ public class listMainActivity extends AppCompatActivity {
             }
         };
 
+        initNameTextView();
+
     }
 
     @Override
@@ -122,7 +124,7 @@ public class listMainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        initNameTextView();
+//        initNameTextView();
 
         G_L_Ref.whereEqualTo("userId", GListApi.getInstance().getUserId())
                 .get()
@@ -207,6 +209,7 @@ public class listMainActivity extends AppCompatActivity {
 
                     }
                 });
+
 
     }
 
@@ -293,10 +296,14 @@ public class listMainActivity extends AppCompatActivity {
         });
     }
 
-    private void initNameTextView(){
+    private void initNameTextView() {
         TextView name = (TextView) findViewById(R.id.name);
         currentUser = mAuth.getCurrentUser();
-        name.setText("Welcome " + currentUser.getDisplayName() + "!");
+        if (currentUser.getDisplayName() == null) {
+            name.setText(""); //Nothing
+        } else {
+            name.setText("Welcome " + currentUser.getDisplayName() + "!");
+        }
         final Animation slideRight = AnimationUtils.loadAnimation(this, R.anim.slide_to_right);
         name.startAnimation(slideRight);
     }

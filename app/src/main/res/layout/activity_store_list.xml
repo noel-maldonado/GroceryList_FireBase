@@ -8,30 +8,11 @@
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true">
 
-    <RelativeLayout
-        android:id="@+id/topPanelLayoutStore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/colorPrimary"
-        >
-
-
-
-        <SearchView
-            android:id="@+id/search_bar_Store"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewStore"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/topPanelLayoutStore"
         android:padding="4dp"
         android:scrollbars="vertical"
         android:background="@android:color/darker_gray"
