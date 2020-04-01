@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -47,8 +49,8 @@ public class ListItemsSavedActivity extends AppCompatActivity {
     private String currentUserName;
 
     //GroceryList Reference
-    private CollectionReference groceryListReference = db.collection("Grocerly List");
-
+    private CollectionReference groceryListReference = db.collection("Grocery List");
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,29 +77,34 @@ public class ListItemsSavedActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        final TextView storeNameTextView = findViewById(R.id.savedItemsStoreName);
         currentUser = mAuth.getCurrentUser();
 
-        final List<StoreProduct> storeProducts = new ArrayList<>();
 
+        final List<StoreProduct> storeProducts = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerViewSavedItems);
         //gets the current documents ID
-        String documentId = GListApi.getInstance().getGlistId();
 
-        groceryListReference.document("" + documentId)
-                .collection("Store_Product").get()
+
+        groceryListReference.document("" + GListApi.getInstance().getGlistId())
+                .collection("Store_Product").whereEqualTo("documentReference", GListApi.getInstance().getGlistId()).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if(!queryDocumentSnapshots.isEmpty()) {
                             for (QueryDocumentSnapshot savedList : queryDocumentSnapshots) {
+                                Log.d(TAG, "Entered queryDocumentSnapshot For Loop");
                                 StoreProduct storeProduct = savedList.toObject(StoreProduct.class);
                                 storeProducts.add(storeProduct);
+                                GListApi.getInstance().setStoreName(storeProduct.getStoreName());
                             }
+                            storeNameTextView.setText(GListApi.getInstance().getStoreName());
                             adapter = new StoreItemsSavedAdapter(ListItemsSavedActivity.this, storeProducts);
                             recyclerView.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
                         } else {
                             Log.d(TAG, "Empty queryDocumentSnapshot");
+                            Log.d(TAG, "" + GListApi.getInstance().getGlistId());
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {

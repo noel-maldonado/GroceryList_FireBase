@@ -9,7 +9,6 @@
         android:title="New List"
         app:showAsAction="ifRoom" />
 
-
     <item
         android:id="@+id/action_settings_main"
         android:title="Settings"

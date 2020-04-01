@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mygrocerylist.R;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -49,6 +50,9 @@ public class StoreItemsSavedAdapter extends RecyclerView.Adapter<StoreItemsSaved
         return new StoreItemsSavedAdapter.ViewHolder(view, context);
     }
 
+
+    //String strDouble = String.format("%.2f", 1.23456);
+
     @Override
     public void onBindViewHolder(@NonNull StoreItemsSavedAdapter.ViewHolder viewHolder, int position) {
 
@@ -56,6 +60,23 @@ public class StoreItemsSavedAdapter extends RecyclerView.Adapter<StoreItemsSaved
         String imageUrl;
         imageUrl = storeProduct.getProductImageUrl();
 
+        Double itemPrice = storeProduct.getItemPrice();
+        String itemPriceText = String.format("%.2f", itemPrice);
+        int quantity = storeProduct.getQuantity();
+        Double total = ((double) quantity) * itemPrice;
+        String totalText = String.format("%.2f", total);
+        //TextViews
+        viewHolder.productPriceTotal.setText(totalText);
+        viewHolder.productPrice.setText(itemPriceText);
+        viewHolder.productQuantity.setText("" + quantity);
+        viewHolder.productName.setText(storeProduct.getItemName());
+        //ImageView
+        /*
+        Use Picasso Library to download and show image
+        Use placeholder just in case Image cant be loaded
+        use fit() to fit image into viewholder
+         */
+        Picasso.get().load(imageUrl).placeholder(R.drawable.ic_store).fit().into(viewHolder.productImage);
 
 
     }
@@ -84,13 +105,17 @@ public class StoreItemsSavedAdapter extends RecyclerView.Adapter<StoreItemsSaved
             productPriceTotal = itemView.findViewById(R.id.productsSavedTotalTextView);
 
             productCheckBox = itemView.findViewById(R.id.checkBox);
-
+            productCheckBox.setOnClickListener(this);
 
         }
 
 
         @Override
         public void onClick(View v) {
+
+            //get item position
+            int position = getAdapterPosition();
+
 
         }
     }

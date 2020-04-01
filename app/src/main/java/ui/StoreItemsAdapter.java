@@ -73,15 +73,14 @@ public class StoreItemsAdapter extends RecyclerView.Adapter<StoreItemsAdapter.Vi
         String imageUrl = product.getProductImageUrl();
 
         Double itemPrice = product.getItemPrice();
-        String itemPriceText = "" + itemPrice;
+        String itemPriceText = String.format("%.2f", itemPrice);
         int quantity = product.getQuantity();
-        String quantityText = "" + quantity;
 
         viewHolder.productPriceTextView.setText(itemPriceText);
         viewHolder.productNameTextView.setText(product.getItemName());
         viewHolder.quantityTextView.setText("" + product.getQuantity());
         Double total = ((double) quantity) * itemPrice;
-        String totalText = "" + total;
+        String totalText = String.format("%.2f", total);
         viewHolder.productsTotalTextView.setText(totalText);
 
         /*
@@ -176,7 +175,7 @@ public class StoreItemsAdapter extends RecyclerView.Adapter<StoreItemsAdapter.Vi
             storeId = GListApi.getInstance().getStoreId();
             storePictureUrl = GListApi.getInstance().getStorePictureUrl();
         }
-        GListApi gListApi = GListApi.getInstance();
+        final GListApi gListApi = GListApi.getInstance();
         assert gListApi != null;
         gListApi.setUsername(currentUserName);
         gListApi.setUserId(currentUserID);
@@ -209,7 +208,7 @@ public class StoreItemsAdapter extends RecyclerView.Adapter<StoreItemsAdapter.Vi
                     public void onSuccess(final DocumentReference documentReference) {
                         Log.d(TAG, "Successfully Added Sub Collection Document");
                         String listId = documentReference.getId();
-                        documentReference.update("documentReference", listId);
+                        documentReference.update("documentReference", gListApi.getGlistId());
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
