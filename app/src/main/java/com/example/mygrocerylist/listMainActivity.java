@@ -15,8 +15,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,6 +80,13 @@ public class listMainActivity extends AppCompatActivity {
 
         groceryLists = new ArrayList<>();
 
+        //Will start animation with users name
+        initNameTextView();
+        //Takes you to the next layout
+        initAddBtn();
+        //Logs out the use
+        initLogoutBtn();
+
         recyclerView = findViewById(R.id.recyclerView);
         //ensures that the size is fixed
         recyclerView.setHasFixedSize(true);
@@ -110,6 +120,7 @@ public class listMainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        initNameTextView();
 
         G_L_Ref.whereEqualTo("userId", GListApi.getInstance().getUserId())
                 .get()
@@ -199,12 +210,12 @@ public class listMainActivity extends AppCompatActivity {
 
 
     //adds the custom Menu
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
-
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return super.onCreateOptionsMenu(menu);
+//
+//    }
 
 
 
@@ -252,7 +263,38 @@ public class listMainActivity extends AppCompatActivity {
         }
     };
 
+    private void initAddBtn(){
+        ImageButton addBtn = (ImageButton) findViewById(R.id.addButton);
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(listMainActivity.this, CreateListActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+    }
 
+    private void initLogoutBtn(){
+        Button logoutBtn = (Button) findViewById(R.id.logout);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentUser != null && mAuth != null) {
+                    mAuth.signOut();
+                    Intent intent = new Intent(listMainActivity.this, loginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            }
+        });
+    }
+
+    private void initNameTextView(){
+        TextView name = (TextView) findViewById(R.id.name);
+        final Animation slideRight = AnimationUtils.loadAnimation(this, R.anim.slide_to_right);
+        name.startAnimation(slideRight);
+    }
 
 
 

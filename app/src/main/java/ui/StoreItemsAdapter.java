@@ -31,6 +31,8 @@ import model.StoreProduct;
 import util.GListApi;
 
 public class StoreItemsAdapter extends RecyclerView.Adapter<StoreItemsAdapter.ViewHolder> {
+
+
     private Context context;
     private List<Product> productList;
     private String currentUserID;

@@ -51,7 +51,7 @@ public class ListStoreActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     //Declare Connection to Firebase Authentication Server
     private FirebaseAuth mAuth;
-
+    //currentUser.displayName()
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseUser currentUser;
     private String currentUserID;

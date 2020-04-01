@@ -9,11 +9,62 @@
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true">
 
+    <RelativeLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@color/common_google_signin_btn_text_dark_focused"
+        >
 
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/final_logo"
+            />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/logo"
+            android:layout_centerHorizontal="true"
+            android:text="Hi User"
+            android:textColor="@android:color/background_light"
+            />
+
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_shape"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="7dp"
+            android:padding="5dp"
+            android:text="Log Out"
+            android:textColor="@android:color/background_light"
+
+            />
+
+        <ImageButton
+            android:id="@+id/addButton"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:src="@drawable/plus"
+            android:background="@color/fui_transparent"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/bottomLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topLayout"
         >
 
 
@@ -23,7 +74,7 @@
             android:layout_height="match_parent"
             android:padding="4dp"
             android:scrollbars="vertical"
-            android:background="@android:color/darker_gray"
+            android:background="@color/soft_black"
              />
 
         <TextView
@@ -33,7 +84,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:textSize="20sp"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/background_light"
             android:text="Press Add To Create A List"
             android:visibility="invisible"
 
