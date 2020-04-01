@@ -176,8 +176,7 @@ public class ListStoreItemsActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.action_settings_store_items:
-
-
+                
                 break;
             case R.id.action_save_store_items:
                 adapter.saveBtn();

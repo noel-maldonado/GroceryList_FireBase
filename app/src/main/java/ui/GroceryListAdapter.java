@@ -157,6 +157,7 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.
                             for (DocumentSnapshot document : queryDocumentSnapshots) {
                                 size++;
                             }
+                            //when list is created a null item is added in order checked
                             if(size  > 1) {
                                 Intent intent = new Intent(context, ListItemsSavedActivity.class);
                                 context.startActivity(intent);
@@ -226,7 +227,7 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListAdapter.
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Succesfully delete" + document);
+                        Log.d(TAG, "Succesfully deleted" + document);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

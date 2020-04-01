@@ -71,7 +71,9 @@ public class listMainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         if(GListApi.getInstance() != null) {
+
             currentUserID = GListApi.getInstance().getUserId();
+
             currentUserName = GListApi.getInstance().getUsername();
         }
 
@@ -239,6 +241,7 @@ public class listMainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Adds the swiping function to the list
     ItemTouchHelper.SimpleCallback itemTouchHelpCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {

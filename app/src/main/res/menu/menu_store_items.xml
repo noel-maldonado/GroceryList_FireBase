@@ -7,7 +7,8 @@
         android:id="@+id/action_menu_store_items"
         android:icon="@drawable/list"
         android:title="Main Menu"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:iconTint="@color/colorAccent"/>
 
     <item
         android:id="@+id/action_save_store_items"
